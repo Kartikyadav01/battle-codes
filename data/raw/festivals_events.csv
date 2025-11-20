@@ -1,0 +1,14 @@
+event_name,city,month,duration_days,category
+Jaipur Literature Festival,Jaipur,1,5,Cultural
+Desert Festival,Jaisalmer,2,3,Cultural
+Holi,All,3,2,Religious
+Gangaur Festival,Jaipur,3,2,Religious
+Mewar Festival,Udaipur,3,3,Cultural
+Summer Festival,Mount Abu,5,3,Cultural
+Teej Festival,Jaipur,7,2,Religious
+Raksha Bandhan,All,8,1,Religious
+Janmashtami,All,8,2,Religious
+Dussehra,All,10,3,Religious
+Pushkar Camel Fair,Pushkar,11,7,Cultural
+Diwali,All,10,3,Religious
+Marwar Festival,Jodhpur,10,2,Cultural
