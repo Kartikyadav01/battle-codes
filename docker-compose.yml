@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  streamlit-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: rajasthan-tourism-app
+    ports:
+      - "8501:8501"
+    environment:
+      # API Keys - Set these via .env file or environment variables
+      - WEATHERAPI_KEY=${WEATHERAPI_KEY:-}
+      - GROQ_API_KEY=${GROQ_API_KEY:-}
+    env_file:
+      - .env
+    volumes:
+      # Optional: Mount data/models if you want to update without rebuilding
+      # - ./data:/app/data:ro
+      # - ./models:/app/models:ro
+      # - ./results:/app/results:ro
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:8501/_stcore/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
