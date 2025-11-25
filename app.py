@@ -243,7 +243,14 @@ def load_prediction_assets():
     city_encoder: LabelEncoder = joblib.load(MODELS_DIR / "city_encoder.pkl")
     rf_model = joblib.load(MODELS_DIR / "random_forest_model.pkl")
     xgb_model = joblib.load(MODELS_DIR / "xgboost_model.pkl")
-    lstm_model = keras.models.load_model(MODELS_DIR / "lstm_model.h5")
+    
+    # Try to load LSTM model, but make it optional
+    lstm_model = None
+    try:
+        lstm_model = keras.models.load_model(MODELS_DIR / "lstm_model.h5")
+    except Exception as e:
+        st.warning("LSTM model could not be loaded. LSTM predictions will be unavailable.")
+    
     return {
         "scaler": scaler,
         "features": feature_columns,
@@ -1110,13 +1117,16 @@ def render_prediction_tab(
         st.info(f"Latest available observation for {city}: {latest_city_date.date()}")
 
     if st.button("Predict via LSTM", key="lstm_forecast_btn"):
-        seq = get_lstm_sequence(city, feature_store, assets["features"])
-        if seq is None:
-            st.warning(f"Need at least {TIME_STEPS} historical days for {city} to use the LSTM model.")
+        if assets["lstm_model"] is None:
+            st.error("LSTM model is not available. Please check the model file.")
         else:
-            seq_input = np.expand_dims(seq, axis=0)
-            lstm_pred = assets["lstm_model"].predict(seq_input, verbose=0)[0][0]
-            st.metric("LSTM next-day prediction", f"{lstm_pred:,.0f} visitors")
+            seq = get_lstm_sequence(city, feature_store, assets["features"])
+            if seq is None:
+                st.warning(f"Need at least {TIME_STEPS} historical days for {city} to use the LSTM model.")
+            else:
+                seq_input = np.expand_dims(seq, axis=0)
+                lstm_pred = assets["lstm_model"].predict(seq_input, verbose=0)[0][0]
+                st.metric("LSTM next-day prediction", f"{lstm_pred:,.0f} visitors")
 
 
 def render_insights_tab(
