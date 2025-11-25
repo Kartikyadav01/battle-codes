@@ -25,9 +25,16 @@ Streamlit Cloud is the easiest way to deploy Streamlit apps. It doesn't require 
    - Go to [share.streamlit.io](https://share.streamlit.io)
    - Sign in with GitHub
    - Click "New app"
-   - Select your repository and branch
-   - Set Main file path: `app.py`
+   - **Repository**: Select your repository from the dropdown (e.g., `username/rajasthan-tourism-prediction`)
+   - **Branch**: Select your branch (usually `main` or `master`)
+   - **Main file path**: Enter `app.py` (just the filename, not a URL)
    - Click "Deploy!"
+
+   **Note**: If the form asks for a GitHub URL instead of a file path, use this format:
+   ```
+   https://github.com/username/repository/blob/main/app.py
+   ```
+   Replace `username` with your GitHub username and `repository` with your repo name.
 
 3. **Configure Secrets (API Keys)**
    - In Streamlit Cloud, go to your app settings
